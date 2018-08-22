@@ -12,11 +12,11 @@
 <body>
 
 <div class="ui fixed inverted menu">
-    <a href="/" class ="header item">Accueil</a>
+    <a href="/" class ="header item">Ici c'est Dhondt</a>
 </div>
 <div class="ui main container">
-<% if (locals.error) { %>
+<% if (locals.flash && locals.flash.error) { %>
     <div class="ui negative message">
-        <%= error %>
+        <%= flash.error %>
     </div>
 <% } %>
