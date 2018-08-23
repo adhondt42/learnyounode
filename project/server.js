@@ -19,21 +19,31 @@ app.use(session({
   }))
 app.use(require('./middlewares/flash'))
 
+
+
 // Route
 app.get('/', (req, res) => {
-    console.log("Someone on main page")
-	res.render('pages/index')
+	let Message = require('./models/message')
+	Message.all(function (messages) {
+	res.render('pages/index', {message: messages})
+	})
 })
 
+
+// Activités
+
 app.post('/' , (req, res) => {
-	console.log(req.body)
 	if (req.body.message === undefined || req.body.message === '') {
         req.flash('error', 'Mais de quelle Dhondterie parle-t-on ?')
         res.redirect('/')
     }
-	else
-		res.redirect("http://google.com")
-	console.log("Someone on '/'")
+	else {
+		let Message = require('./models/message')
+		Message.create(req.body.message, function () {
+		req.flash('success', "Dhondterie enregistrée avec succès !")
+        res.redirect('/')
+	})
+	}
 
 })
 
