@@ -1,4 +1,4 @@
-var http = require('http')
+var http = require('https')
 
 http.get(process.argv[2], function(res){
   var ret = ""

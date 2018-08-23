@@ -26,6 +26,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/' , (req, res) => {
+	console.log(req.body)
 	if (req.body.message === undefined || req.body.message === '') {
         req.flash('error', 'Mais de quelle Dhondterie parle-t-on ?')
         res.redirect('/')
