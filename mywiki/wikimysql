@@ -1,0 +1,136 @@
+Tracer les routes : postman
+
+
+# MYSQL #
+
+# Ajout env
+PATH="/usr/local/mysql/bin:$PATH" 
+
+## BASICS CMD ##
+
+## Démarrage
+sudo service mysql start
+
+## Redémarrage
+sudo service mysql restart
+
+## Arret
+sudo service mysql stop
+
+
+## Lancer la console mySQL
+mysql -u root -p
+
+
+# Ajouter ou changer le mot de passe de root:
+SET password FOR "root"@"localhost" = password('Nouveau_mot_de_passe');
+
+
+## Voir toutes les databases
+SHOW DATABASES ;
+
+## Utiliser une certaine base de donnée
+USE nom_de_la_base;
+
+## Créer un base de données
+CREATE DATABASE nom_de_la_base;
+
+## Supprimer une base de données
+DROP DATABASE nom_de_la_base;
+
+## Importer un base de données située dans le répertoire courant (base de donnée exportée en .sql)
+SOURCE fichier.sql;
+
+### Les Tables
+
+## Lister toutes les tables
+SHOW TABLES;
+
+## Voir la structure d'une table
+DESCRIBE nom_table;  SHOW COLUMN FROM ma_table;
+
+## Renommer une table
+ALTER TABLE nom_table RENAME AS nouveau_nom;
+
+
+### Créer une Table
+CREATE TABLE nom_de_la_table (name VARCHAR(20), owner VARCHAR(20),
+    -> species VARCHAR(20), sex CHAR(1), birth DATE, death DATE);
+
+### Supprimer une Table
+DROP TABLE nom_table;
+
+### Afficher le contenue d'une table
+SELECT nom_du_champ FROM nom_du_tableau
+
+## Inserction 
+### Insérer une ligne en spécifiant seulement les colonnes souhaitées
+INSERT INTO table (nom_colonne_1, nom_colonne_2, ...
+ VALUES ('valeur 1', 'valeur 2', ...)
+
+### Insertion de plusieurs lignes à la fois
+INSERT INTO client (prenom, nom, ville, age)
+ VALUES
+ ('Rébecca', 'Armand', 'Saint-Didier-des-Bois', 24),
+ ('Aimée', 'Hebert', 'Marigny-le-Châtel', 36),
+ ('Marielle', 'Ribeiro', 'Maillères', 27);
+
+## Update
+UPDATE table
+SET nom_colonne_1 = 'nouvelle valeur'
+WHERE condition
+
+UPDATE table
+SET colonne_1 = 'valeur 1', colonne_2 = 'valeur 2', colonne_3 = 'valeur 3'
+WHERE condition
+
+WHERE NOT existe aussi
+
+
+### Ajouter une colonne
+ALTER TABLE utilisateur
+ADD adresse_rue VARCHAR(255);
+
+### Supprimer une colonne
+ALTER TABLE nom_table
+DROP COLUMN nom_colonne;
+
+
+## Voir la structure d'une tab
+DESCRIBE nom_de_la-table;
+
+
+### Utilisateurs
+
+## Créer un utilisateur
+CREATE USER "nom_utilisateur"@"localhost";
+
+
+
+## Privilèges
+
+### Donner tous les droits sur une base de données à un utilisateur précis
+GRANT ALL ON nom_base.* TO "nom_utilisateur"@"localhost";
+
+### Supprimer les droits à un utilisateur
+REVOKE ALL privileges ON nom_base.* FROM "nom_utilisateur"@"localhost";
+
+/*
+Sources:
+
+https://www.mysql.com/fr/
+https://doc.ubuntu-fr.org/mysql
+*/
+
+
+
+
+
+
+## AUTH ERRORS ##
+	
+{Error: ER_NOT_SUPPORTED_AUTH_MODE: Client does not support authentication protocol requested by server; consider upgrading MySQL Client
+-> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'rootroot';
+}
+
+
