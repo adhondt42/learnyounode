@@ -1,5 +1,6 @@
 var http = require('http');
 var fs = require('fs');
+var ent = require('ent') // evite injection de js ??
 
 var server = http.createServer(function(req, res) {
     fs.readFile('./views/index.html', 'utf-8', function(error, content) {
@@ -8,25 +9,23 @@ var server = http.createServer(function(req, res) {
     });
 });
 
-// Chargement de socket.io
-var io = require('socket.io').listen(server);
+
+var io = require('socket.io').listen(server) // Chargement de socket.io
 
 io.sockets.on('connection', function (socket) {
-    console.log("Client OK")
-    socket.emit('message', 'Vous êtes bien connecté !'); // un client
-    
-    socket.broadcast.emit('message', 'Nouvel arrivant :' + socket.pseudo); // tous les client
 
-
-    socket.on('message', function (message) {
-        console.log(socket.pseudo + ' me parle ! Il me dit : ' + message);
+    socket.on('new_client', (pseudo) => {
+        pseudo = ent.encode(pseudo)
+        socket.pseudo = pseudo
+        socket.broadcast.emit('new_client', pseudo)
     })
-    socket.on('new_pseudo', (pseudo) => {
-    socket.pseudo = pseudo
-    })
-    socket.on('petit_nouveau', function(pseudo) {
-        socket.pseudo = pseudo;
 
-    });
+    socket.on('message', (message) => {
+        message = ent.encode(message)
+        console.log(message)
+        socket.broadcast.emit('message', {pseudo: socket.pseudo, message: message})
+    })
 })
+
+
 server.listen(8888)

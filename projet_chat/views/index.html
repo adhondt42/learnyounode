@@ -6,24 +6,42 @@
     </head>
  
     <body>
-        <h1>Communication avec socket.io !</h1>
+        <h1>El gato !!</h1>
 
-        <p><input type="button" value="Embêter le serveur" id="poke" /></p>
-        
-        
+        <form action="/" method="post" id="new_msg">
+            <div class="ui action mini input">
+                <input type="text" id="msg_content" placeholder="Message ..." />
+                <button class="ui teal button">Add message</button>
+            </div>
+        </form>
+       
+        <section id="zone_chat"></section>
+
         <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script>
             var socket = io.connect('http://localhost:8888')
-
-            var pseudo = prompt('Quel est votre pseudo ?');
-            socket.emit('petit_nouveau', pseudo);
-            socket.on('message', (message) => {
-                alert(message)
+            var pseudo = prompt('Pseudo ?')
+            socket.emit('new_client', pseudo)
+            document.title = pseudo + ' - ' + document.title;
+            
+            socket.on('new_client', (pseudo) => {
+                $('#zone_chat').prepend('<p><em> [' + pseudo + ']' + ' joined the chat</em></p><br />')
             })
-            $('#poke').click(function () {
-                socket.emit('message', 'Salut serveur, ça va ?');
+            socket.on('message', (data) => {
+                insert_message(data.pseudo, data.message)
             })
+            $('#new_msg').submit(() => {
+                var message = $('#msg_content').val()
+                socket.emit('message', message)
+                insert_message(pseudo, message)
+                $('#message').val('').focus();
+                return false // empeche d'aller vers action="/"
+            })
+            function insert_message(pseudo, message) {
+                $('#zone_chat').prepend('<p><strong>' + pseudo + '</strong> ' + message + '</p>');
+            }
         </script>
     </body>
 </html>
+
