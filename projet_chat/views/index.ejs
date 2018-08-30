@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Socket.io</title>
+        <link rel="stylesheet" href="/semantic/semantic.min.css">
+        <div class="ui menu">
+                <a href="/" class ="header item ">elgato!</a>
+            </div>
+    </head>
+ 
+    <body>
+
+        <div class="ui segment teal">
+            <div class="ui right internal attached rail">
+                <div class="ui segment teal" id="user_list">
+                    User list :
+                </div>
+            </div>
+            <p> 
+                <form action="/" method="post" id="new_msg">
+                    <div class="ui action mini input">
+                        <input type="text" id="msg_content" placeholder="Message ..." />
+                        <button class="ui teal button">Add message</button>
+                    </div>
+                </form>       
+                <section style="margin-top: 2em;" id="zone_chat"></section>
+            </p>
+        </div>
+
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io.connect('http://localhost:8888')
+            var pseudo = prompt('Pseudo ?')
+            while (pseudo === '' || pseudo === undefined)
+            {
+                pseudo = prompt('You should choose a pseudo:')
+            }
+
+            socket.emit('new_client', pseudo)
+            document.title = pseudo + ' - ' + document.title;
+
+            socket.on('new_client', (data) => {
+                if (data.txt_area == 1)
+                    $('#zone_chat').prepend('<p><em> [' + data.pseudo + ']' + ' joined elgato!</em></p><br />')
+                $('#user_list').append('<p id="' + data.pseudo + '">' + data.pseudo + '</p>')
+
+            })
+
+            socket.on('message', (data) => {
+                insert_message(data.pseudo, data.message)
+            })
+
+            socket.on('usr_disconnect', (pseudo) => {
+                $('#zone_chat').prepend('<p><em> [' + pseudo + ']' + '  leaved elgato!</em></p><br />')
+                $('#' + pseudo).remove()
+
+            })
+
+
+            $('#new_msg').submit(() => {
+                var message = $('#msg_content').val()                           // .val ne marche pas ?
+                socket.emit('message', message)
+                insert_message(pseudo, message)
+                $('#message').val('').focus();
+                return false                                                    // empeche d'aller vers action="/"
+            })
+
+            function insert_message(pseudo, message) {
+                $('#zone_chat').prepend('<p class="comment"><strong>' + pseudo + ' : </strong> ' + message + '</p>');
+            }
+        </script>
+    </body>
+</html>
+
