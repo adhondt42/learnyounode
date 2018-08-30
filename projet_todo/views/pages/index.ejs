@@ -4,21 +4,21 @@
           <div class="ui segment">
             <h3 class="ui orange big ribbon label">To do</h3>
             <p>
-                    <div class="ui divided selection list">
-                        <% for (task of task) { %>
-                        <a class="item" href="/delete/<%= task.id %>" >
-                            <div class="ui red horizontal label">x</div>
-                            <%= task.content%>
-                        </a>
-             <% } %>
-                    </div>
-            </p>
-            <form action="/add" method="post">
-                <div class="ui action mini input">
-                    <input type="text" name="newtask" placeholder="Task ..." />
-                    <button class="ui teal button">Add task</button>
-                </div>
-            </form>
-          </div>
+            <div class="ui divided selection list">
+                <% for (task of task) { %>
+                <a class="item" href="/delete/<%= task.id %>" >
+                    <div class="ui red horizontal label">x</div>
+                    <%= task.content%>
+                </a>
+            <% } %>
+            </div>
+        </p>
+    <form action="/add" method="post">
+        <div class="ui action mini input">
+            <input type="text" name="newtask" placeholder="Task ..." />
+            <button class="ui teal button">Add task</button>
         </div>
+    </form>
+    </div>
+</div>
       <% include footer %>

@@ -1,2 +1,25 @@
 # Chopper des variables dans HTML
  #id / . class
+
+
+## action
+#source: projet chat
+# Supprimer une section
+$('#loginsection').fadeOut()
+# Ajouter elem devant
+$('#zone_chat').prepend(newmessage)
+# Ajouter elem à la suite
+$('#zone_chat').append(newmessage)
+# remove elem
+$('#' + message.id).remove()
+# Reagir à action
+$('#submit_form').submit((data) =>{
+	#valider et vider pour eviter flood
+	§('#message_area').val()
+	#refaire un focus sur le dernier champ
+	§('#message_area').focus()
+	# Eviter le action="/"
+	return false
+	||
+	data.preventDefault() # au debut ou pas ?
+})

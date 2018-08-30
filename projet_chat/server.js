@@ -43,5 +43,4 @@ io.sockets.on('connection', function (socket) {                                 
         io.sockets.emit('usr_disconnect', socket.pseudo)
     })
 })
-
 server.listen(8888)
