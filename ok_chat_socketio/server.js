@@ -7,6 +7,7 @@ var ent = require('ent')                                                        
 // Setting express/template
 app.set('view engine', 'ejs')
 app.use(express.static('public'))                                               // dossier contient les statics
+app.use(express.static('views'))                                               // dossier contient les statics
 
 app.get('/', (req, res) => {
     // res.sendFile('./views/index.ejs' , { root : __dirname});                 // __dirname = current directory
